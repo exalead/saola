@@ -1,0 +1,6 @@
+Linux:
+	make -j8
+
+Windows:
+	
+

@@ -1,0 +1,116 @@
+Saola (System for Advanced Optimization of Logical Assertions)
+Numerical Expression Compiler
+Copyright (C) 2012 Dassault Systèmes Exalead
+See the COPYING file for license information
+
+More information at:
+     https://github.com/exalead
+     http://www.exalead.com
+
+0. Goals
+--------
+
+Saola is an optimized numerical expression compiler and evaluator. It aims to
+translate a regular string expression ("a+42") into an evaluable form.
+The evaluable form is optimized on x86-64 (AMD64) architectures into real
+machine bytecode to improve performances, and into pseudo-bytecode on other
+architectures.
+
+It has the following features:
+- double and long (64-bit) numerical support
+- common operators (+, -, <<, ...), parenthesis support
+- built-in functions (log, pow ...), custom functions
+- custom variables (const or non-const)
+
+1. Supported features
+---------------------
+
+Numbers
+-9223372036854775808 .. 9223372036854775807
+                Decimal number
+X.Y             Double number
+X.Ye+Z          Double number, exponent form
+0x0 .. 0xffffffffffffffff
+                Hexadecimal number
+0b0 .. 0b1111111111111111111111111111111111111111111111111111111111111111
+                Binary number
+
+Variables
+[a-zA-Z0-9]*   Any defined variable (const or non-const)
+                
+Floating-point or Integer
+-x             Unary negative
+abs(x)         Absolute value of two numbers
+x + y          Add
+x - y          Subtract
+x * y          Multiply
+x / y          Divide
+min(x,y)       Min of two numbers
+max(x,y)       Max of two numbers
+b ? x : y      Ternary conditional operator
+
+Boolean
+true           Boolean true (1)
+false          Boolean false (0)
+!b             Boolean negation
+b && c         Boolean and
+b || c         Boolean or
+b ^^ c         Boolean xor
+x < y          Less than (result is boolean)
+x <= y         Less or equal (result is boolean)
+x > y          Greater than (result is boolean)
+x >= y         Greater or equal (result is boolean)
+x == y         Equals (result is boolean)
+x != y         Not equals (result is boolean)
+
+Integer
+x % y          Modulus
+x & y          Binary and
+x | y          Binary or
+x ^ y          Binary xor
+x << y         Left binary shift
+x >> y         Right binary shift
+x >>> y        Right unsigned binary shift
+long(x)        Conversion from floating-point to integer
+long_raw(x)    Raw IEEE754 copy from double to long
+
+Floating-point
+nan            Not a number
+inf            Infinite
+~x             Binary negation
+acos(x)        Arc cosine
+acosh(x)       Arc cosine hyperbolic
+asin(x)        Arc sine
+asinh(x)       Arc sine hyperbolic
+atan(x)        Arc tangent
+atanh(x)       Arc tangent hyperbolic
+cbrt(x)        Cube root
+ceil(x)        Smallest integral value not less
+cos(x)         Cosine
+cosh(x)        Hyperbolic cosine
+exp(x)         Base-e exponential
+floor(x)       Largest integral value not greater
+j0(x)          Bessel functions of first kind, order 0
+j1(x)          Bessel functions of first kind, order 1
+log(x)         Base-e logarithm
+log10(x)       Base-10 logarithm
+log2(x)        Base-2 logarithm
+pow(x)         Power
+round(x)       Round to nearest integer away from zero
+sin(x)         Sine
+sinh(x)        Hyperbolic sine
+sqrt(x)        Square root
+tan(x)         Tangent
+tanh(x)        Hyperbolic tangent
+trunc(x)       Round to integer towards from zero
+y0(x)          Bessel functions of second kind, order 0
+y1(x)          Bessel functions of second kind, order 1
+double(x)      Conversion from integer to floating-point
+double_raw(x)  Raw IEEE754 copy from long to double
+atan2(x,y)     Arc tangent of two numbers
+fmod(x,y)      Floating-point remainder
+hypot(x,y)     Euclidean distance
+nextafter(x,y) Next representable floating-point value
+jn(n,x)        Bessel functions of first kind, order n
+ldexp(x,n)     Multiply by power of 2
+yn(n,x)        Bessel functions of second kind, order n
