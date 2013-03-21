@@ -77,3 +77,101 @@ a*(b<<1)+a/10
 	asm: [0039]	.byte 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 4708
 
+0
+	asm: [0000]	xor %rax, %rax
+	asm: [0003]	ret 
+	asm: [0004]	.byte 0x00, 0x00, 0x00, 0x00
+0
+
+42
+	asm: [0000]	movq $0x2a, %rax
+	asm: [0007]	ret 
+42
+
+a
+	asm: [0000]	mov 0x8(%rdi), %rax
+	asm: [0004]	ret 
+	asm: [0005]	.byte 0x00, 0x00, 0x00
+42
+
+a+b
+	asm: [0000]	mov 0x8(%rdi), %rcx
+	asm: [0004]	add 0x10(%rdi), %rcx
+	asm: [0008]	mov %rcx, %rax
+	asm: [000b]	ret 
+	asm: [000c]	.byte 0x00, 0x00, 0x00, 0x00
+98
+
+a*b
+	asm: [0000]	mov 0x8(%rdi), %rcx
+	asm: [0004]	imul 0x10(%rdi), %rcx
+	asm: [0009]	mov %rcx, %rax
+	asm: [000c]	ret 
+	asm: [000d]	.byte 0x00, 0x00, 0x00
+2352
+
+a+(b*c)
+	asm: [0000]	mov 0x10(%rdi), %rcx
+	asm: [0004]	imul $0xd, %rcx, %rcx
+	asm: [0008]	add 0x8(%rdi), %rcx
+	asm: [000c]	mov %rcx, %rax
+	asm: [000f]	ret 
+770
+
+a/(b+d)
+	asm: [0000]	mov 0x10(%rdi), %rcx
+	asm: [0004]	addq $0xed, %rcx
+	asm: [0008]	mov 0x8(%rdi), %r8
+	asm: [000c]	mov %rdx, %r9
+	asm: [000f]	mov %r8, %rax
+	asm: [0012]	cqo 
+	asm: [0014]	mov %rcx, %r10
+	asm: [0017]	test %r10, %r10
+	asm: [001a]	cmovz 0xe(%rip), %r10
+	asm: [0022]	idivq %r10
+	asm: [0025]	mov %rax, %r8
+	asm: [0028]	mov %r9, %rdx
+	asm: [002b]	mov %r8, %rax
+	asm: [002e]	ret 
+	asm: [002f]	.byte 0x00
+	asm: [0030]	.byte 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f
+1
+
+a*(b<<1)+a/10
+	asm: [0000]	mov 0x10(%rdi), %rcx
+	asm: [0004]	shlq $0x1, %rcx
+	asm: [0008]	imul 0x8(%rdi), %rcx
+	asm: [000d]	mov 0x8(%rdi), %r8
+	asm: [0011]	mov %rdx, %r9
+	asm: [0014]	mov $0x6666666666666667, %rax
+	asm: [001e]	imulq %r8
+	asm: [0021]	sarq $0x2, %rdx
+	asm: [0025]	sarq $0x3f, %r8
+	asm: [0029]	sub %r8, %rdx
+	asm: [002c]	mov %rdx, %r8
+	asm: [002f]	mov %r9, %rdx
+	asm: [0032]	add %r8, %rcx
+	asm: [0035]	mov %rcx, %rax
+	asm: [0038]	ret 
+	asm: [0039]	.byte 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+4708
+
+c != 0 ? ( a+b == 42 ? a*b : a*(b+1) ) : 0
+	asm: [0000]	mov 0x8(%rdi), %rcx
+	asm: [0004]	add 0x10(%rdi), %rcx
+	asm: [0008]	cmpq $0x2a, %rcx
+	asm: [000c]	setz %r8b
+	asm: [0010]	movsxb %r8b, %r8
+	asm: [0014]	test %r8, %r8
+	asm: [0017]	jz 0x24
+	asm: [0019]	mov 0x8(%rdi), %rcx
+	asm: [001d]	imul 0x10(%rdi), %rcx
+	asm: [0022]	jmp 0x30
+	asm: [0024]	mov 0x10(%rdi), %rcx
+	asm: [0028]	incq %rcx
+	asm: [002b]	imul 0x8(%rdi), %rcx
+	asm: [0030]	mov %rcx, %rax
+	asm: [0033]	ret 
+	asm: [0034]	.byte 0x00, 0x00, 0x00, 0x00
+2394
+
